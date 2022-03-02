@@ -56,6 +56,8 @@ export default async function handler(
       ...(after && { after: query.Ref(query.Collection('images'), after) }),
     };
 
+    console.log(queryOptions)
+
     return client
       .query<ImagesQueryResponse>(
         query.Map(
