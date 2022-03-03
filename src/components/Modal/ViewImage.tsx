@@ -22,11 +22,11 @@ export function ModalViewImage({
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered={true}>
       <ModalOverlay />
-      <ModalContent bg={"pGray.800"} maxH={"600"} maxW={"900"}>
+      <ModalContent bg={"pGray.800"} maxH={"600"} maxW={"900"} w={"100%"} h={"100%"}>
         <ModalBody padding={"initial"}>
-          <Image src={imgUrl} maxH={"600"} maxW={"900"} w={"100%"} h={"100%"}></Image>
+          <Image src={imgUrl} maxH={"600"} maxW={"900"} w={"100%"} h={"100%"} objectFit={"cover"}></Image>
         </ModalBody>
-        <ModalFooter justifyContent={"flex-start"}>
+        <ModalFooter justifyContent={"flex-start"}  bg={"pGray.800"}>
           <Link href={imgUrl} target={"_blank"}>Abrir original</Link>
         </ModalFooter>
       </ModalContent>
