@@ -13,10 +13,10 @@ export function Header(): JSX.Element {
           alignItems="center"
           maxW={1120}
           mx="auto"
-          px={20}
+          px={{base:"8", md:"20"}}
           py={6}
         >
-          <Image src="logo.svg" h={10} />
+          <Image src="logo.svg" h={10} px={"1"} />
           <Button onClick={() => onOpen()}>Adicionar imagem</Button>
         </Flex>
       </Box>
