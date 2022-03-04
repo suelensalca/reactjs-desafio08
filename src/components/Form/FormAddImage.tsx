@@ -6,8 +6,15 @@ import { useMutation, useQueryClient } from 'react-query';
 import { api } from '../../services/api';
 import { FileInput } from '../Input/FileInput';
 import { TextInput } from '../Input/TextInput';
+import { string } from 'yup';
 interface FormAddImageProps {
   closeModal: () => void;
+}
+
+interface ImageData {
+  url: string;
+  title: string;
+  description: string;
 }
 
 export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
@@ -47,7 +54,7 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
 
   const queryClient = useQueryClient();
   const mutation = useMutation(
-    async (data) => await api.post('api/images', data),
+    async (data: ImageData) => await api.post('api/images', data),
     {
       onSuccess: async () => { queryClient.invalidateQueries('images')}
     }
@@ -63,15 +70,16 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
   } = useForm();
   const { errors } = formState;
 
-  const onSubmit = async (data): Promise<void> => {
+  const onSubmit = async (data: ImageData): Promise<void> => {
     data.url = imageUrl
+    console.log(data.description)
     try {
       {!imageUrl ? (
         toast({
           title: 'Imagem não adicionada',
           description: 'É preciso adicionar e aguardar o upload de uma imagem antes de realizar o cadastro',
           status: 'error',
-          duration: 6000
+          duration: 3000
         })
       )
       : (
@@ -80,7 +88,7 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
           title: 'Imagem cadastrada',
           description: 'Sua imagem foi cadastrada com sucesso',
           status: 'success',
-          duration: 6000
+          duration: 3000
         })
       )
     }
