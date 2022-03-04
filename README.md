@@ -19,8 +19,8 @@
 </div>
 <h3>Screenshot</h3>
 <div align="center">
-    <img src="/public/images/upfi-landpage.png">
-    <img src="/public/images/upfi-modal.png">
-    <img src="/public/images/upfi-button.png">
-    <img src="/public/images/upfi-viewimage.png">
+    <img src="/public/upfi-landpage.png">
+    <img src="/public/upfi-modal.png">
+    <img src="/public/upfi-button.png">
+    <img src="/public/upfi-viewimage.png">
 </div>
