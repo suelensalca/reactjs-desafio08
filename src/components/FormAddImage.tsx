@@ -3,9 +3,9 @@ import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 
-import { api } from '../../services/api';
-import { FileInput } from '../Input/FileInput';
-import { TextInput } from '../Input/TextInput';
+import { api } from '../services/api';
+import { FileInput } from './Input/FileInput';
+import { TextInput } from './Input/TextInput';
 import { string } from 'yup';
 interface FormAddImageProps {
   closeModal: () => void;
@@ -26,29 +26,31 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
     image: {
       required: 'Arquivo obrigatório',
       validate: {
-        lessThan10MB: image => image[0].size <= (1024 * 1024 * 10) || 
-        'O arquivo deve ser menor que 10MB',
-        acceptedFormats: image => image[0].type !== /image\/(jpeg|png|gif)$/i ||
-        'Somente são aceitos arquivos PNG, JPEG e GIF'
-      }
+        lessThan10MB: image =>
+          image[0].size <= 1024 * 1024 * 10 ||
+          'O arquivo deve ser menor que 10MB',
+        acceptedFormats: image =>
+          image[0].type !== /image\/(jpeg|png|gif)$/i ||
+          'Somente são aceitos arquivos PNG, JPEG e GIF',
+      },
     },
     title: {
       required: 'Título obrigatório',
       minLength: {
         value: 2,
-        message: 'Mínimo de 2 caracteres'
+        message: 'Mínimo de 2 caracteres',
       },
       maxLength: {
         value: 20,
-        message: 'Máximo de 20 caracteres'
-      }
+        message: 'Máximo de 20 caracteres',
+      },
     },
     description: {
       required: 'Descrição obrigatória',
       maxLength: {
         value: 65,
-        message: 'Máximo de 65 caracteres'
-      }
+        message: 'Máximo de 65 caracteres',
+      },
     },
   };
 
@@ -56,54 +58,49 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
   const mutation = useMutation(
     async (data: ImageData) => await api.post('api/images', data),
     {
-      onSuccess: async () => { queryClient.invalidateQueries('images')}
+      onSuccess: async () => {
+        queryClient.invalidateQueries('images');
+      },
     }
   );
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState,
-    setError,
-    trigger,
-  } = useForm();
+  const { register, handleSubmit, reset, formState, setError, trigger } =
+    useForm();
   const { errors } = formState;
 
   const onSubmit = async (data: ImageData): Promise<void> => {
-    data.url = imageUrl
-    console.log(data.description)
+    data.url = imageUrl;
+    console.log(data.description);
     try {
-      {!imageUrl ? (
-        toast({
-          title: 'Imagem não adicionada',
-          description: 'É preciso adicionar e aguardar o upload de uma imagem antes de realizar o cadastro',
-          status: 'error',
-          duration: 3000
-        })
-      )
-      : (
-        await mutation.mutateAsync(data) &&
-        toast({
-          title: 'Imagem cadastrada',
-          description: 'Sua imagem foi cadastrada com sucesso',
-          status: 'success',
-          duration: 3000
-        })
-      )
-    }
+      {
+        !imageUrl
+          ? toast({
+              title: 'Imagem não adicionada',
+              description:
+                'É preciso adicionar e aguardar o upload de uma imagem antes de realizar o cadastro',
+              status: 'error',
+              duration: 3000,
+            })
+          : (await mutation.mutateAsync(data)) &&
+            toast({
+              title: 'Imagem cadastrada',
+              description: 'Sua imagem foi cadastrada com sucesso',
+              status: 'success',
+              duration: 3000,
+            });
+      }
     } catch {
       toast({
         title: 'Falha no cadastro',
         description: 'Ocorreu um erro ao tentar cadastrar a sua imagem',
         status: 'error',
-        duration: 3000
-      })
+        duration: 3000,
+      });
     } finally {
-      reset()
+      reset();
       setImageUrl('');
-      setLocalImageUrl('')
-      closeModal()
+      setLocalImageUrl('');
+      closeModal();
     }
   };
 
